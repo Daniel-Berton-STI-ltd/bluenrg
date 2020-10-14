@@ -1,8 +1,6 @@
 //! Vendor-specific HCI commands and types needed for those commands.
 
 extern crate bluetooth_hci as hci;
-extern crate byteorder;
-extern crate embedded_hal as hal;
 extern crate nb;
 
 use byteorder::{ByteOrder, LittleEndian};
@@ -77,7 +75,7 @@ pub trait Commands {
     /// further put the device into the Standby mode instead of the sleep mode. The difference is
     /// that, in sleep mode, the device can still wake up itself with the internal timer. But in
     /// standby mode, this timer is also disabled. So the only possibility to wake up the device is
-    /// by the external signals, e.g. a HCI command sent via SPI bus.
+    /// by the external signals, e.g. a HCI command.
     ///
     /// Based on the measurement, the current consumption under sleep mode is ~2 uA. And this value
     /// is ~1.5 uA in standby mode.
@@ -176,16 +174,8 @@ pub trait Commands {
     fn get_anchor_period(&mut self) -> nb::Result<(), Self::Error>;
 }
 
-impl<'bnrg, 'spi, 'dbuf, SPI, OutputPin1, OutputPin2, InputPin, SpiError, GpioError> Commands
-    for crate::ActiveBlueNRG<'bnrg, 'spi, 'dbuf, SPI, OutputPin1, OutputPin2, InputPin, GpioError>
-where
-    SPI: hal::blocking::spi::Transfer<u8, Error = SpiError>
-        + hal::blocking::spi::Write<u8, Error = SpiError>,
-    OutputPin1: hal::digital::v2::OutputPin<Error = GpioError>,
-    OutputPin2: hal::digital::v2::OutputPin<Error = GpioError>,
-    InputPin: hal::digital::v2::InputPin<Error = GpioError>,
-{
-    type Error = crate::Error<SpiError, GpioError>;
+impl<'bnrg, 'dbuf, 'wrt> Commands for crate::ActiveBlueNRG<'bnrg, 'dbuf, 'wrt> {
+    type Error = crate::Error;
 
     fn get_firmware_revision(&mut self) -> nb::Result<(), Self::Error> {
         self.write_command(crate::opcode::HAL_GET_FIRMWARE_REVISION, &[])

@@ -3,9 +3,9 @@ edition = "2018"
 name = "bluenrg"
 version = "0.1.0"
 authors = ["Daniel Gallagher <pdanielgallagher@gmail.com>"]
-categories = ["embedded", "hardware-support", "no-std"]
+categories = ["embedded", "hardware-support"]
 description = "Interface to ST Micro BlueNRG Bluetooth radios"
-keywords = ["spi", "bare-metal", "embedded-hal-driver"]
+keywords = [ "bare-metal", "embedded-hal-driver"]
 license = "MIT/Apache-2.0"
 repository = "https://github.com/danielgallagher0/bluenrg"
 readme = "README.md"
@@ -17,13 +17,10 @@ default = ["ms"]
 ms = []
 
 [dependencies]
-nb = "0.1.2"
+nb = "1.0"
 bluetooth-hci = "0.1.0"
 bitflags = "1.2"
 
-[dependencies.embedded-hal]
-version = "0.2.3"
-features = ["unproven"]
 
 [dependencies.byteorder]
 version = "1"

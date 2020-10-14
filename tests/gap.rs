@@ -1,6 +1,5 @@
 extern crate bluenrg;
 extern crate bluetooth_hci as hci;
-extern crate embedded_hal as hal;
 extern crate nb;
 
 mod fixture;
